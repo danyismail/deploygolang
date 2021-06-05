@@ -2,11 +2,13 @@ FROM golang:1.10.5-alpine3.8
 
 WORKDIR /app
 
-COPY main.go .
+COPY . .
 
-RUN go build -o binary
+RUN go mod tidy
+
+RUN go build -o exec
 
 EXPOSE 8000
 
-CMD [“./main”]
+ENTRYPOINT ["app/exec"]
 
