@@ -8,5 +8,5 @@ RUN go install -v ./...
 
 RUN go build -o binary
 
-ENTRYPOINT ["/app/binary"]
+CMD ["go" ,"run" ,"main.go"]
 
