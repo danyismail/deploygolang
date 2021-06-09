@@ -1,12 +1,15 @@
 FROM golang:1.13
 
-WORKDIR /go/src/app
-COPY . .
+ENV PORT=8000
+ENV INSTANCE_ID=is_running
 
-RUN go get -d -v ./...
-RUN go install -v ./...
+WORKDIR /app
+
+COPY . .
 
 RUN go build -o binary
 
-CMD ["go" ,"run" ,"main.go"]
+EXPOSE 8080
+
+ENTRYPOINT ["/app/binary"]
 

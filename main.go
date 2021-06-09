@@ -4,9 +4,15 @@ import (
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/joho/godotenv"
 )
 
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatalln("Error loading .env file")
+	}
 	port := os.Getenv("PORT")
 	if port == "" {
 		log.Fatal("port is required")
