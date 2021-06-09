@@ -1,14 +1,12 @@
-FROM golang:1.10.5-alpine3.8
+FROM golang:1.16
 
-WORKDIR /app
-
+WORKDIR /go/src/app
 COPY . .
 
-RUN go mod tidy
+RUN go get -d -v ./...
+RUN go install -v ./...
 
-RUN go build -o exec
+CMD ["app"]
 
-EXPOSE 8000
-
-ENTRYPOINT ["app/exec"]
+ENTRYPOINT ["/app/binary"]
 
