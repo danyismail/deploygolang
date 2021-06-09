@@ -6,5 +6,7 @@ COPY . .
 RUN go get -d -v ./...
 RUN go install -v ./...
 
-ENTRYPOINT ["/app"]
+RUN go build -o binary
+
+ENTRYPOINT ["/app/binary"]
 
