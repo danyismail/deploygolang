@@ -4,6 +4,6 @@ services:
   golang-app:
     build:
       context: .
-      dockerfile: ./Dockerfile
+      dockerfile: Dockerfile
     ports:
       - "0.0.0.0:8080:8000"
