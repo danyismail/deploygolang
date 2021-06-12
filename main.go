@@ -1,6 +1,9 @@
 package main
 
 import (
+	"encoding/json"
+	"golang-docker/db"
+	"golang-docker/model"
 	"log"
 	"net/http"
 	"os"
@@ -9,7 +12,14 @@ import (
 )
 
 func main() {
-	err := godotenv.Load()
+	// var c context.Context
+
+	err, db := db.ConnDB()
+	if err != nil {
+		os.Exit(1)
+	}
+
+	err = godotenv.Load()
 	if err != nil {
 		log.Fatalln("Error loading .env file")
 	}
@@ -32,6 +42,44 @@ func main() {
 		}
 
 		w.Write([]byte(text))
+	})
+
+	mux.HandleFunc("/users", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		if r.Method != "GET" {
+			http.Error(w, "http method not allowed", http.StatusBadRequest)
+			return
+		}
+
+		var user []model.User
+		db.Model(&user).Scan(&user)
+
+		listUser, err := json.Marshal(user)
+		if err != nil {
+			w.Write([]byte("error occured while getting user lists"))
+		}
+
+		w.Write([]byte(listUser))
+
+	})
+
+	mux.HandleFunc("/tasks", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		if r.Method != "GET" {
+			http.Error(w, "http method not allowed", http.StatusBadRequest)
+			return
+		}
+
+		var tasks []model.Task
+		db.Model(&tasks).Scan(&tasks)
+
+		listTasks, err := json.Marshal(tasks)
+		if err != nil {
+			w.Write([]byte("error occured while getting user lists"))
+		}
+
+		w.Write([]byte(listTasks))
+
 	})
 
 	server := new(http.Server)
