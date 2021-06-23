@@ -38,7 +38,7 @@ func main() {
 
 		text := "Hello world "
 		if text != "" {
-			text += " from" + instanceID
+			text += " from " + instanceID
 		}
 
 		w.Write([]byte(text))
